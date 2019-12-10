@@ -1,0 +1,26 @@
+{
+  "name": "@backlogics/cab",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "description": "An alternative version of CreateReactApp, a cool boilerplate with some sugar!",
+  "scripts": {
+    "compile-no-watch": "rimraf ./dist && babel -d ./dist/ ./src/ --copy-files --config-file ../../.babelrc",
+    "compile": "npm run compile-no-watch -- -w --verbose",
+    "prepack": "npm run compile-no-watch"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "boxen": "^4.2.0",
+    "chalk": "^3.0.0",
+    "commander": "^4.0.1",
+    "cross-spawn": "^7.0.1",
+    "fs-extra": "^8.1.0",
+    "inquirer": "^7.0.0",
+    "os": "^0.1.1",
+    "react-dev-utils": "^10.0.0",
+    "rimraf": "^3.0.0"
+  }
+}

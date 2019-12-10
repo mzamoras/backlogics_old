@@ -1,0 +1,28 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^3.19.0"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap --use-workspaces"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "boxen": "^4.2.0",
+    "chalk": "^3.0.0",
+    "commander": "^4.0.1",
+    "core-js": "^3.4.8",
+    "cross-spawn": "^7.0.1",
+    "fs-extra": "^8.1.0",
+    "inquirer": "^7.0.0",
+    "os": "^0.1.1",
+    "react-dev-utils": "^10.0.0",
+    "rimraf": "^3.0.0"
+  }
+}
