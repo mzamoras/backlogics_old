@@ -2,7 +2,12 @@ import {welcomeMessage} from './tools/output';
 import packageJson from '../package.json';
 import program from 'commander';
 import inquirer from 'inquirer';
-import {emojis} from './tools/constants';
+import path from 'path';
+import chalk from 'chalk';
+import tools from './tools/tools';
+import fs from 'fs-extra';
+import {createProjectQuestions} from './tools/constants';
+
 
 welcomeMessage(packageJson);
 const packCommand = 'cab';
@@ -37,33 +42,54 @@ function createOption(name, selected = false, disabled = false) {
 
 
 function createProject(name) {
+
+    const templates = {
+        'Web App': 'web-app',
+        'Web App + Electron': 'electron-web-app',
+        'Only Electron': 'electron',
+        'Chrome Extension': 'chrome-extension',
+    }
+
     const frameworks = [
-        createOption('React'),
+        createOption('React', true),
         createOption('Vue'),
         createOption('Svelte'),
     ];
 
-    const projectType = [
-        createOption('Web App'),
-        createOption('WebApp + Electron'),
-        createOption('Chrome Extension'),
-    ];
+    const projectType = Object.keys(templates).map((k, i) => {
+        return createOption(k, !i);
+    });
 
     const compiler = [
         createOption('Parcel', true),
         createOption('Webpack')
     ];
-    inquirer.prompt([{
-        type: 'list',
-        message: 'Select the Javascript Framework you would like to implement',
-        name: 'options2',
-        choices: frameworks
-    }]);
-    inquirer.prompt([{
-        type: 'list',
-        message: 'Select the Javascript Framework you would like to implement',
-        name: 'options2',
-        choices: compiler
-    }]);
-    //console.log('com1', name);
+
+    const installingPath = path.join(process.cwd(), name);
+
+    console.log();
+    console.log(`This will be the path where your project will be created:\n${chalk.greenBright(installingPath)}`);
+    console.log();
+    
+
+    inquirer.prompt(createProjectQuestions(frameworks, projectType, compiler)).then(answers => {
+        console.log(JSON.stringify(answers, null, '  '));
+        if(answers.rightPath){
+            installProject(installingPath, name, answers, templates);
+        }
+    });
+
+}
+
+function installProject(givenPath, name, answers, templates) {
+    const root = path.resolve(givenPath);
+    const appName = path.basename(root);
+    const currentTempPath = path.resolve(__dirname, '../templates/', templates[answers.projectType], 'src');
+
+    fs.ensureDirSync(givenPath);
+    
+    if (!tools.isSafeToCreateProjectIn(root, name)){
+        //fs.copy(templates, path.join(root, '/src'));
+        console.log('INSTALLING');
+    }
 }
